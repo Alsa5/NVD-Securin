@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CVE List</title>
+    <style>
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .sort{
+            text-align:right;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .pagination {
+            margin-top: 10px;
+            display: flex;
+            justify-content: right;
+        }
+        .page-link {
+            padding: 6px 12px;
+            margin: 0 2px;
+            border: 1px solid #dee2e6;
+            cursor: pointer;
+        }
+        .page-link:hover {
+            background-color: #007bff;
+            color: #fff;
+            border-color: #007bff;
+        }
+        .active {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .disabled {
+            pointer-events: none;
+            color: #6c757d;
+            background-color: #e9ecef;
+            border-color: #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <h1>CVE LIST</h1>
+    <div>Total Records: {{ total_count }}</div>
+    <div class="sort">
+        <label for="sort-by">Sort By:</label>
+        <select id="sort-by" name="sort-by">
+            <option value="" disabled selected>Choose</option>
+            <option value="id">CVE ID</option>
+            <option value="base_score">CVE Score</option>
+            <option value="source_identifier">Identifier</option>
+        </select>
+        <button onclick="sortCves()">Sort</button>
+    </div>
+    <br>
+    <table>
+        <thead>
+            <tr>
+                <th>CVE ID</th>
+                <th>IDENTIFIER</th>
+                <th>PUBLISHED DATE</th>
+                <th>LAST MODIFIED DATE</th>
+                <th>STATUS</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cve in cves %}
+            <tr onclick="window.location.href='/cves/{{ cve.id }}'">
+                <td>{{ cve.id }}</td>
+                <td>{{ cve.source_identifier }}</td>
+                <td>{{ cve.published[:10] }}</td>
+                <td>{{ cve.last_modified[:10] }}</td>
+                <td>{{ cve.status}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <div class="records-per-page">
+        <label for="records-per-page">Records Per Page:</label>
+        <select id="records-per-page" name="records-per-page" onchange="changePerPage()">
+            <option value="" disabled selected>Choose</option>
+            <option value="10">10</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+    </div>
+
+    <div class="pagination">
+        Showing {{ start_record }}-{{ end_record }} of {{ total_count }} records
+        {% if total_pages > 1 %}
+            <a class="page-link {% if page == 1 %}disabled{% endif %}" href="?page={{ page - 1 }}">&laquo;</a>
+            {% for p in range(start_page, end_page + 1) %}
+                <a class="page-link {% if p == page %}active{% endif %}" href="?page={{ p }}">{{ p }}</a>
+            {% endfor %}
+            <a class="page-link {% if page == total_pages %}disabled{% endif %}" href="?page={{ page + 1 }}">&raquo;</a>
+        {% endif %}
+    </div>
+    <script>
+        function sortCves() {
+            var sortBy = document.getElementById('sort-by').value;
+            window.location.href = `?sort=${sortBy}`;
+        }
+    </script>
+     <script>
+        function changePerPage() {
+            var perPage = document.getElementById('records-per-page').value;
+            window.location.href = `?per_page=${perPage}`;
+        }
+    </script>
+</body>
+</html>

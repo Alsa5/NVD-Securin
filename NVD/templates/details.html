@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CVE Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-weight: bold;
+        }
+
+        p {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ cve_data.id }}</h1>
+        <h3>Description:</h3>
+        <p>{{ cve_data.description }}</p>
+        <h4>CVSS V2 METRICS:</h4>
+        <pre>Severity: {{ cve_data.severity }}            Score:<span style="color: red"> {{ cve_data.base_score }}</span></pre>
+        <pre>CVSS Vector String:   {{ cve_data.cvss_vector_string }}</pre>
+        <table>
+            <thead>
+                <tr>
+                    <th>Access Vector</th>
+                    <th>Access Complexity</th>
+                    <th>Authentication</th>
+                    <th>Confidentiality Impact</th>
+                    <th>Integrity Impact</th>
+                    <th>Availability Impact</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ cve_data.access_vector }}</td>
+                    <td>{{ cve_data.access_complexity }}</td>
+                    <td>{{ cve_data.authentication }}</td>
+                    <td>{{ cve_data.confidentiality_impact }}</td>
+                    <td>{{ cve_data.integrity_impact }}</td>
+                    <td>{{ cve_data.availability_impact }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <h4>Scores:</h4>
+        <p>Exploitability Score: {{ cve_data.exploitability_score }}</p>
+        <p>Impact Score: {{ cve_data.impact_score }}</p>
+        <h4>CPE:</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Criteria</th>
+                    <th>Match Criteria ID</th>
+                    <th>Vulnerable</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ cve_data.criteria }}</td>
+                    <td>{{ cve_data.match_criteria_id }}</td>
+                    <td>{{ cve_data.vulnerable }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
